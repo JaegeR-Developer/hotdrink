@@ -1,0 +1,72 @@
+// Класс ГорячийНапиток
+public class HotDrink {
+    private String name;
+    private int volume;
+    
+    public HotDrink(String name, int volume) {
+        this.name = name;
+        this.volume = volume;
+    }
+    
+    // Геттеры и сеттеры
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getVolume() {
+        return volume;
+    }
+    
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+}
+
+// Наследник класса ГорячийНапиток
+public class HotDrinkWithTemperature extends HotDrink {
+    private int temperature;
+    
+    public HotDrinkWithTemperature(String name, int volume, int temperature) {
+        super(name, volume);
+        this.temperature = temperature;
+    }
+    
+    // Геттер и сеттер для поля температура
+    public int getTemperature() {
+        return temperature;
+    }
+    
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+}
+
+// Интерфейс ТорговыйАвтомат
+public interface VendingMachine {
+    HotDrink getProduct(String name, int volume, int temperature);
+}
+
+// Класс ГорячихНапитковАвтомат, реализующий интерфейс ТорговыйАвтомат
+public class HotDrinkVendingMachine implements VendingMachine {
+    @Override
+    public HotDrink getProduct(String name, int volume, int temperature) {
+        return new HotDrinkWithTemperature(name, volume, temperature);
+    }
+}
+
+// Пример использования
+public class Main {
+    public static void main(String[] args) {
+        HotDrinkVendingMachine machine = new HotDrinkVendingMachine();
+        
+        HotDrink hotTea = machine.getProduct("Tea", 250, 80);
+        HotDrink hotCoffee = machine.getProduct("Coffee", 300, 90);
+        
+        System.out.println("Вы получили " + hotTea.getName() + " объемом " + hotTea.getVolume() + " мл при температуре " + ((HotDrinkWithTemperature) hotTea).getTemperature() + " градусов.");
+        System.out.println("Вы получили " + hotCoffee.getName() + " объемом " + hotCoffee.getVolume() + " мл при температуре " + ((HotDrinkWithTemperature) hotCoffee).getTemperature() + " градусов.");
+    }
+}
